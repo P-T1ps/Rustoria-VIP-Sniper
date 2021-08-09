@@ -21,7 +21,10 @@ def rustoria_core(url: str, title: str, tools, round_thousandths=True):
     price = convert(target['price'])
     price = round(price, 2) if round_thousandths else price
     in_stock = (target_stock == "IN STOCK".lower().strip()) or target_stock == "LAST FEW REMAINING".lower().strip()
-    return {'title': title, "description": description, "price": price, "in_stock": in_stock}
+    game = target['game']
+    servers = target['servers'].replace("&quot;", "").replace("[", "").strip("]")
+    return {'title': title, "description": description, "price": price, "in_stock": in_stock,
+            "game": game, "server": servers}
 
 
 def rustoria_us_main(tools):
