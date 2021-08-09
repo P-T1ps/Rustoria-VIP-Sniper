@@ -14,6 +14,7 @@ client = commands.Bot(command_prefix='.', intents=intents)
 
 @client.event
 async def on_ready():
+    print("Ready")
     checker.start()
 
 
@@ -137,11 +138,14 @@ async def checker():
     }
     guild = client.get_guild(874007431527686154)
     for x in data:
-        in_stock = data[x][0]["in_stock"]
+        in_stock = dict(data[x][0])["in_stock"]
         if in_stock:
             embed = discord.Embed()
             embed.title = data[x][1]
-            embed.description = discord_styler(data[x][0]['description'])
+            embed.url = "https://donate.rustoria.co/packages.php?game=<GM>&server=<SVR>".replace(
+                "<GM>", dict(data[x][0])['game']).replace("<SVR>", dict(data[x][0])['server'])
+            embed.description = discord_styler(dict(data[x][0])['description'])
+            embed.add_field(name="Price", value="$" + str(dict(data[x][0])['price']), inline=True)
             role = discord.utils.get(guild.roles, name=data[x][1])
             for member in guild.members:
                 if role in member.roles:
