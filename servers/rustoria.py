@@ -19,16 +19,22 @@ def rustoria_core(url: str, title: str, tools, round_thousandths=True):
     title = target['title']
     description = target['description']
     price = convert(target['price'])
+    expires = target['expires']
     price = round(price, 2) if round_thousandths else price
     in_stock = (target_stock == "IN STOCK".lower().strip()) or target_stock == "LAST FEW REMAINING".lower().strip()
     game = target['game']
     servers = target['servers'].replace("&quot;", "").replace("[", "").strip("]")
-    return {'title': title, "description": description, "price": price, "in_stock": in_stock,
-            "game": game, "server": servers}
+    img = "https://donate.rustoria.co/" + target['img'].replace("\\", "")
+    return {'title': title, "description": description, "price": price, "expires": expires, "in_stock": in_stock,
+            "game": game, "server": servers, "img": img}
 
 
 def rustoria_us_main(tools):
     return rustoria_core("https://donate.rustoria.co/packages.php?game=3&server=15", "VIP | US Main", tools)
+
+
+def rustoria_us_main_wipe(tools):
+    return rustoria_core("https://donate.rustoria.co/packages.php?game=3&server=15", "Wipe VIP | US Main", tools)
 
 
 def rustoria_us_medium(tools):
